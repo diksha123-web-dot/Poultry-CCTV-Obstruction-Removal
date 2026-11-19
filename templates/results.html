@@ -1,0 +1,464 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Poultry CCTV - Comparison Results</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 30px 15px;
+    background: #edf2f7;
+    color: #243b53;
+}
+
+.container {
+    max-width: 1250px;
+    margin: auto;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 34px;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 14px;
+    box-shadow: 0 3px 12px #0000000c;
+}
+
+h2 {
+    color: #243b53;
+}
+
+video {
+    width: 100%;
+    max-height: 430px;
+    background: black;
+    border-radius: 9px;
+}
+
+.video-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.video-box h3 {
+    text-align: center;
+}
+
+.metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.metric {
+    background: #edf2fc;
+    padding: 16px;
+    border-radius: 9px;
+    text-align: center;
+}
+
+.metric strong {
+    display: block;
+    font-size: 22px;
+    margin-top: 8px;
+}
+
+.preview {
+    margin-top: 25px;
+}
+
+.preview img {
+    width: 100%;
+    border-radius: 9px;
+}
+
+.chart-container {
+    max-width: 900px;
+    margin: auto;
+}
+
+button {
+    padding: 12px 25px;
+    background: #4b5eea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.back {
+    text-align: center;
+    margin: 30px;
+}
+
+@media(max-width: 700px) {
+    .video-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .metrics {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+    <h1>CCTV Processing Results</h1>
+    <p>Three-Technique Obstruction Removal Comparison</p>
+</header>
+
+
+<!-- ORIGINAL VIDEO -->
+
+<div class="card">
+
+    <h2>Original CCTV Video</h2>
+
+    <video controls playsinline preload="metadata">
+        <source
+            src="{{ url_for('main.result_file',
+            job_id=job_id,
+            filename='original_10sec.mp4') }}"
+            type="video/mp4">
+    </video>
+
+    <p>This is the original uploaded CCTV footage.</p>
+
+</div>
+
+
+<!-- TECHNIQUE 1: OPENCV TELEA -->
+
+<div class="card">
+
+    <h2>Technique 1: OpenCV Telea Inpainting</h2>
+
+    <div class="video-grid">
+
+        <div class="video-box">
+            <h3>Before – Original Video</h3>
+
+            <video controls playsinline>
+                <source
+                    src="{{ url_for('main.result_file',
+                    job_id=job_id,
+                    filename='original_10sec.mp4') }}"
+                    type="video/mp4">
+            </video>
+        </div>
+
+        <div class="video-box">
+            <h3>After – Telea Output</h3>
+
+            <video controls playsinline>
+                <source
+                    src="{{ url_for('main.result_file',
+                    job_id=job_id,
+                    filename='telea_output.mp4') }}"
+                    type="video/mp4">
+            </video>
+        </div>
+
+    </div>
+
+    <div class="preview">
+        <h3>Processed Frame Preview</h3>
+
+        <img
+            src="{{ url_for('main.result_file',
+            job_id=job_id,
+            filename='telea_output_preview.jpg') }}"
+            alt="Telea preview">
+    </div>
+
+    <div class="metrics">
+
+        <div class="metric">
+            Frames Processed
+            <strong>{{ telea.frames }}</strong>
+        </div>
+
+        <div class="metric">
+            Processing Time
+            <strong>{{ telea.time }} sec</strong>
+        </div>
+
+        <div class="metric">
+            Average FPS
+            <strong>{{ telea.fps }}</strong>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- TECHNIQUE 2: LAMA -->
+
+<div class="card">
+
+    <h2>Technique 2: LaMa Image Inpainting</h2>
+
+    <div class="video-grid">
+
+        <div class="video-box">
+            <h3>Before – Original Video</h3>
+
+            <video controls playsinline>
+                <source
+                    src="{{ url_for('main.result_file',
+                    job_id=job_id,
+                    filename='original_10sec.mp4') }}"
+                    type="video/mp4">
+            </video>
+        </div>
+
+        <div class="video-box">
+            <h3>After – LaMa Output</h3>
+
+            <video controls playsinline>
+                <source
+                    src="{{ url_for('main.result_file',
+                    job_id=job_id,
+                    filename='lama_output.mp4') }}"
+                    type="video/mp4">
+            </video>
+        </div>
+
+    </div>
+
+    <div class="preview">
+        <h3>Processed Frame Preview</h3>
+
+        <img
+            src="{{ url_for('main.result_file',
+            job_id=job_id,
+            filename='lama_output_preview.jpg') }}"
+            alt="LaMa preview">
+    </div>
+
+    <div class="metrics">
+
+        <div class="metric">
+            Frames Processed
+            <strong>{{ lama.frames }}</strong>
+        </div>
+
+        <div class="metric">
+            Processing Time
+            <strong>{{ lama.time }} sec</strong>
+        </div>
+
+        <div class="metric">
+            Average FPS
+            <strong>{{ lama.fps }}</strong>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- TECHNIQUE 3: PROPAINTER -->
+
+<div class="card">
+
+    <h2>Technique 3: ProPainter Video Inpainting</h2>
+
+    <div class="video-grid">
+
+        <div class="video-box">
+            <h3>Before – Original Video</h3>
+
+            <video controls playsinline>
+                <source
+                    src="{{ url_for('main.result_file',
+                    job_id=job_id,
+                    filename='original_10sec.mp4') }}"
+                    type="video/mp4">
+            </video>
+        </div>
+
+        <div class="video-box">
+            <h3>After – ProPainter Output</h3>
+
+            <video controls playsinline>
+                <source
+                    src="{{ url_for('main.result_file',
+                    job_id=job_id,
+                    filename=propainter_video) }}"
+                    type="video/mp4">
+            </video>
+        </div>
+
+    </div>
+
+    <div class="preview">
+        <h3>Processed Frame Preview</h3>
+
+        <img
+            src="{{ url_for('main.result_file',
+            job_id=job_id,
+            filename=propainter_preview) }}"
+            alt="ProPainter preview">
+    </div>
+
+    <div class="metrics">
+
+        <div class="metric">
+            Frames Processed
+            <strong>{{ propainter.frames }}</strong>
+        </div>
+
+        <div class="metric">
+            Processing Time
+            <strong>{{ propainter.time }} sec</strong>
+        </div>
+
+        <div class="metric">
+            Average FPS
+            <strong>{{ propainter.fps }}</strong>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- PERFORMANCE COMPARISON CHART -->
+
+<div class="card">
+
+    <h2>Performance Comparison</h2>
+
+    <p>
+        Comparison of processing time and average frame rate
+        for the three techniques.
+    </p>
+
+    <div class="chart-container">
+        <canvas id="comparisonChart"></canvas>
+    </div>
+
+</div>
+
+
+<!-- PROJECT SUMMARY -->
+
+<div class="card">
+
+    <h2>Project Summary</h2>
+
+    <p>
+        The system compares three obstruction removal
+        techniques using poultry CCTV footage.
+        OpenCV Telea uses traditional inpainting,
+        LaMa uses deep learning for image reconstruction,
+        and ProPainter uses temporal information for
+        video inpainting.
+    </p>
+
+    <p>
+        The outputs and performance measurements help
+        evaluate the strengths and limitations of
+        each technique.
+    </p>
+
+</div>
+
+
+<div class="back">
+    <a href="/">
+        <button>Upload Another Video</button>
+    </a>
+</div>
+
+</div>
+
+
+<!-- CHART SCRIPT -->
+
+<script>
+
+const labels = [
+    "OpenCV Telea",
+    "LaMa",
+    "ProPainter"
+];
+
+const processingTimes = [
+    {{ telea.time }},
+    {{ lama.time }},
+    {{ propainter.time }}
+];
+
+const processingFPS = [
+    {{ telea.fps }},
+    {{ lama.fps }},
+    {{ propainter.fps }}
+];
+
+new Chart(
+    document.getElementById("comparisonChart"),
+    {
+        type: "bar",
+
+        data: {
+            labels: labels,
+
+            datasets: [
+                {
+                    label: "Processing Time (seconds)",
+                    data: processingTimes
+                },
+                {
+                    label: "Average FPS",
+                    data: processingFPS
+                }
+            ]
+        },
+
+        options: {
+            responsive: true,
+
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    }
+);
+
+</script>
+
+</body>
+</html>

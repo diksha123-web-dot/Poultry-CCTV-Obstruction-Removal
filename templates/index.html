@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Poultry CCTV Obstruction Removal</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #edf2f7;
+    margin: 0;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.container {
+    max-width: 850px;
+    margin: auto;
+    background: white;
+    padding: 55px 30px;
+    border-radius: 18px;
+}
+
+h1 { color: #243b53; }
+
+input { margin: 25px; }
+
+button {
+    background: #4b5eea;
+    color: white;
+    border: 0;
+    padding: 15px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 17px;
+}
+
+.message { color: red; }
+
+.info {
+    color: #52606d;
+    line-height: 1.8;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Poultry CCTV Obstruction Removal</h1>
+
+<p class="info">
+Upload a CCTV video to reconstruct areas covered by
+fixed wires and poles.
+</p>
+
+<p class="info">
+The system compares OpenCV Telea, LaMa and ProPainter.
+Videos longer than 10 seconds will be trimmed to the
+first 10 seconds.
+</p>
+
+{% with messages = get_flashed_messages() %}
+    {% for message in messages %}
+        <p class="message">{{ message }}</p>
+    {% endfor %}
+{% endwith %}
+
+<form method="POST" enctype="multipart/form-data">
+
+    <input
+        type="file"
+        name="video"
+        accept=".mp4,.avi,.mov,.mkv"
+        required>
+
+    <br>
+
+    <button type="submit">
+        Upload and Process
+    </button>
+
+</form>
+
+</div>
+
+</body>
+</html>
